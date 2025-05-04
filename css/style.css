@@ -11,7 +11,8 @@ html, body {
 
 header {
     height: 5vh;
-    background-color: red;
+    background-color: #ed1650;
+    color: #f3c9d4;
     text-align: center;
 }
 
@@ -33,29 +34,32 @@ header {
 .decoder_input {
     height: 95vh;
     flex-direction: row;
+    background-image: linear-gradient(to left, rgba(237, 22, 80, 0.5), rgba(0, 0, 0, 0.5)),
+        url("../resources/nuvens-brancas-no-fundo-do-ceu-azul_119828-4427.jpg");
+    background-size: cover;
+    background-position: center;
 }
 
 .decoder_output {
     flex-direction: column;
-    background-color: blueviolet;
+    background-color: rgb(210, 210, 210);
 }
 
 /* .logo e .input compartilham 50% da largura */
 .logo, 
 .input {
     height: 100%;
-    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.logo {
-    background-color: blue;
+.logo{
+    width: 40%;
 }
 
 .input {
-    background-color: brown;
+    width: 60%;
     flex-direction: column;
 }
 
@@ -72,7 +76,7 @@ header {
 }
 
 .logo img {
-    animation: floatAndScale 6s ease-in-out infinite;
+    animation: floatAndScale 10s ease-in-out infinite;
     height: 50%;
     width: auto;
 }
@@ -84,38 +88,88 @@ header {
 }
 
 .input textarea {
-    height: 80%;
+    height: 75%;
     font-size: 14px;
     text-transform: uppercase;
+    resize: none;
+
+    border: #ed1650 solid 2px;
+    transition: all .3s ease-in-out;
+
+    /* Para aumentar o espaçamento entre a fonte interna*/
+    padding: 12px 16px 12px 16px; /* top, right, bottom, left */
+}
+
+.input textarea:focus{
+    outline: none;
+    border: #2a0089 solid 2px;
+    box-shadow: none;
 }
 
 .input button {
+    height: 4%;
+    width: 30%;
     margin-top: 10px;
+    background-color: transparent;
+    
+    border: #ed1650 solid 2px;
+    background-color: #ed1650;
+    color: white;
+    border-radius: 5px;
+    font-size: large;
+    font-weight: 900;
+
+    transition: all .2s ease-in-out;
+}
+
+.input button:hover{
+    color: white;
+    background-color: #2a0089;
+    border: #2a0089 solid 2px;
 }
 
 .last_mod {
-    background-color: white;
     margin-top: 30px;
     width: 80%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.allEditors,
+.lastEditor{
+    background-color: #f2f2f2;
+    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.4);
+    
+    margin: 10px;
+    width: 45%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.4);
 }
 
-.blocks {
+.allEditors p {
+    margin: 1px;
+}
+
+.lastEditor {
+    height: 200px;
+}
+
+.divBlocks {
     margin-top: 30px;
-    background-color: white;
-    width: 80%;
-    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.4);
+    width: 90%;
 
     display: flex;
     flex-wrap: wrap; /* permite quebrar linha */
     gap: 20px; /* espaçamento entre os cards (opcional) */
 }
 
-.blocks .block {
+.divBlocks .divBlock {
     background-color: #f2f2f2;
     width: 20%;
 
@@ -129,4 +183,12 @@ header {
     text-align: left;
 
     box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+.divBlocks .divBlock h3{
+    color: #2a0089;
+}
+
+.divBlocks .divBlock p{
+    margin: 2px;
 }

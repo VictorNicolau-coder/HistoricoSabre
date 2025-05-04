@@ -1,53 +1,59 @@
-/*To-do List: 
-Separar funções em 3 arquivos js distintos:
-    Manipulação Strings;
-    Manipulação Documento;
-    Main - junção das últimas duas;
-*/
+import {ultimasEdicoes, splitBlocks} from './stringHandler.js';
 
-let ultimasEdicoes = [];
+let decoder_output;
+let encrypted_text = "";
 
-function splitBlocks(value){
-    const key_word = "OAC-";
+let last_mod;
+let allEditors;
+let lastEditor;
 
-    // Novos editores
-    ultimoEditores = [];
+let divBlocks;
+let stringBlocks;
 
-   // Limpeza inicial
-    let rows = value
-        .replace(/¥/g, '')        // remove o caractere indesejado
-        .split("\n")              // quebra em linhas
-        .map(row => row.trim())   // remove espaços nas bordas
-        .filter(row => row !== ''); // remove linhas vazias
+function updateLastMod(){
+    //Consulta o array de ultimos editores e os coloca dentro de paragrafos
+    ultimasEdicoes.forEach((edicao, i) =>{
+        let p = document.createElement("p");
+        p.textContent = edicao.split(" ")[1] + " " + edicao.split(" ")[2];
 
-    // Agrupamento em blocos
-    let blocks = [];
-    let currentBlock = [];
-    let prevRow = "";
+        if (ultimasEdicoes.length-1 == i) lastEditor.appendChild(p);
+        else allEditors.appendChild(p);
+    })
+    allEditors.className = "allEditors";
+    lastEditor.className = "lastEditor";
+    last_mod.className = "last_mod";
 
-    rows.forEach(row => {
-    if (prevRow.includes(key_word)) {
-            // Finaliza o bloco anterior ao encontrar a palavra-chave
-            ultimasEdicoes.push(row);
-            currentBlock.push(row);
-            blocks.push(currentBlock);
-            currentBlock = [];
-        } else {
-            currentBlock.push(row);
-        }
-        prevRow = row;
-    });
+    last_mod.appendChild(allEditors);
+    last_mod.appendChild(lastEditor);
 
-    // Salva o último bloco
-    if (currentBlock.length > 0) blocks.push(currentBlock);
-
-    edicoes = blocks;
-    return blocks;
+    decoder_output.appendChild(last_mod);
 }
 
-function update(){
-    /* const encrypted_text = document.getElementById("input").value; */
-    let encrypted_text = `UAX ASIENTOS/HK1/LA3611X23JUNPMWGRU-GONCALVES DA SILVA/ELISDET
+function updateEditionsBlocks(){
+    stringBlocks.forEach( stringBlock => {
+        const divBlock = document.createElement("div");
+        const data_mod = document.createElement("h3");
+        
+        stringBlock.slice(0, -1).forEach((row, i) => {
+            const p = document.createElement("p");
+            p.textContent = row;
+            divBlock.appendChild(p);
+            
+        });
+
+        data_mod.textContent = stringBlock[stringBlock.length-1];
+        divBlock.className = "divBlock";
+        divBlock.appendChild(data_mod);
+        divBlocks.appendChild(divBlock);
+    });
+    divBlocks.className = "divBlocks";
+
+    decoder_output.appendChild(divBlocks);
+}
+
+export function createDivOutput(isTesting){
+    if (isTesting) {
+        encrypted_text = `UAX ASIENTOS/HK1/LA3611X23JUNPMWGRU-GONCALVES DA SILVA/ELISDET
                         TI MS
                         OAC- JJ SAO M9 5796554
                         SAO-SAO-M9 HDQ5MGO 0943/10APR25
@@ -273,92 +279,42 @@ function update(){
                         ¥
                         HDQ-HDQ-FR HDQ8SJ0 1813/04APR25
                         ¥`;
-    let decoder_output = document.querySelector(".decoder_output");
-    
+    } else {
+        encrypted_text = document.getElementById("input").value;
+    }
+    decoder_output = document.querySelector(".decoder_output");
+    encrypted_text.st
+
     // Se não existe, cria
     if (!decoder_output) {
         decoder_output = document.createElement("div");
         decoder_output.classList.add("decoder_output");
         
-        let last_mod = document.createElement("div");
-        let allEditors = document.createElement("div");
-        let lastEditor = document.createElement("div");
-
-        let blocks = document.createElement("div");
-        
-        //Consulta o array de ultimos editores e os coloca dentro de paragrafos
-        ultimasEdicoes.forEach((edicao, indice) =>{
-            let p = document.createElement("p");
-            p.textContent = edicao.split(" ")[1] + " " + edicao.split(" ")[2];
-
-            if (ultimasEdicoes.length-1 == indice) lastEditor.appendChild(p);
-            else allEditors.appendChild(p);
-        })
-        allEditors.classList.add("allEditors");
-        lastEditor.classList.add("lastEditor");
-        last_mod.classList.add("last_mod");
-
-        last_mod.appendChild(allEditors);
-        last_mod.appendChild(lastEditor);
-
-        let blocos = splitBlocks(encrypted_text);
-        blocos.forEach( bloco => {
-            const block = document.createElement("div");
-            const data_mod = document.createElement("h3");
+        last_mod = document.createElement("div");
+        allEditors = document.createElement("div");
+        lastEditor = document.createElement("div");    
+        updateLastMod();
+    
+        divBlocks = document.createElement("div");
+        stringBlocks = splitBlocks(encrypted_text);
+        updateEditionsBlocks();
             
-            bloco.slice(0, -1).forEach(row => {
-                const p = document.createElement("p");
-                p.textContent = row;
-                block.appendChild(p);                
-            });
-
-            data_mod.textContent = bloco[bloco.length-1];
-            block.classList.add("block");
-            block.appendChild(data_mod);
-            blocks.appendChild(block);
-        });
-        blocks.classList.add("blocks");
-        
-        decoder_output.appendChild(last_mod);
-        decoder_output.appendChild(blocks);
-
         document.getElementById("main").appendChild(decoder_output);
     }
-
+    
     // Atualiza o conteúdo
-    let last_mod = decoder_output.querySelector(".last_mod");
-    let allEditors = decoder_output.querySelector(".allEditors");
-    let lastEditor = decoder_output.querySelector(".lastEditor");
-
+    last_mod = decoder_output.querySelector(".last_mod");
+    allEditors = decoder_output.querySelector(".allEditors");
+    lastEditor = decoder_output.querySelector(".lastEditor");
+    
+    allEditors.innerHTML = "";
+    lastEditor.innerHTML = "";
     last_mod.innerHTML = ""; // Limpa conteúdo anterior
     
-    ultimasEdicoes.forEach((edicao, indice) => {
-        let p = document.createElement("p");
-        p.textContent = edicao.split(" ")[1] + " " + edicao.split(" ")[2];
-        
-        if (ultimasEdicoes.length-1 == indice) lastEditor.appendChild(p);
-        else allEditors.appendChild(p);
-    });
-    last_mod.appendChild(allEditors);
-    last_mod.appendChild(lastEditor);
-
-    let blocks = decoder_output.querySelector(".blocks");
-    blocks.innerHTML = ""; // Limpa blocos antigos
-
-    let blocos = splitBlocks(encrypted_text);
-    blocos.forEach(bloco => {
-        const block = document.createElement("div");
-        const data_mod = document.createElement("h3");
-
-        bloco.slice(0, -1).forEach(row => {
-            const p = document.createElement("p");
-            p.textContent = row;
-            block.appendChild(p);
-        });
-
-        data_mod.textContent = bloco[bloco.length - 1];
-        block.classList.add("block");
-        block.appendChild(data_mod);
-        blocks.appendChild(block);
-    });
+    updateLastMod();
+    
+    divBlocks = decoder_output.querySelector(".divBlocks");
+    divBlocks.innerHTML = ""; // Limpa blocos antigos
+    
+    updateEditionsBlocks();
 }
