@@ -35,7 +35,7 @@ header {
     height: 95vh;
     flex-direction: row;
     background-image: linear-gradient(to left, rgba(237, 22, 80, 0.5), rgba(0, 0, 0, 0.5)),
-        url("../resources/nuvens-brancas-no-fundo-do-ceu-azul_119828-4427.jpg");
+        url("../resources/white-texture.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -43,6 +43,8 @@ header {
 .decoder_output {
     flex-direction: column;
     background-color: rgb(210, 210, 210);
+
+    padding-bottom: 30px;
 }
 
 /* .logo e .input compartilham 50% da largura */
@@ -65,18 +67,18 @@ header {
 
 @keyframes floatAndScale {
     0% {
-      transform: translateY(0) scale(1);
+      transform: translateY(0) scaleX(1);
     }
     50% {
-      transform: translateY(-20px) scale(1.2);
+        transform: translateY(-40px) scaleX(-1);
     }
     100% {
-      transform: translateY(0) scale(1);
+        transform: translateY(0) scaleX(1);
     }
 }
 
 .logo img {
-    animation: floatAndScale 10s ease-in-out infinite;
+    animation: floatAndScale 8s ease-in-out infinite;
     height: 50%;
     width: auto;
 }
@@ -116,7 +118,7 @@ header {
     background-color: #ed1650;
     color: white;
     border-radius: 5px;
-    font-size: large;
+    font-size: 1.2rem;
     font-weight: 900;
 
     transition: all .2s ease-in-out;
@@ -126,7 +128,9 @@ header {
     color: white;
     background-color: #2a0089;
     border: #2a0089 solid 2px;
+    font-size: 1.3rem;
 }
+
 
 .last_mod {
     margin-top: 30px;
@@ -153,7 +157,7 @@ header {
 }
 
 .allEditors p {
-    margin: 1px;
+    padding: 5px;
 }
 
 .lastEditor {

@@ -11,13 +11,23 @@ let divBlocks;
 let stringBlocks;
 
 function updateLastMod(){
+    allEditors.replaceChildren()
+    lastEditor.replaceChildren()
+    last_mod.replaceChildren()
+
+    let labelLastEditor = document.createElement("h1")
+    labelLastEditor.textContent = "Última assinatura:"
+    lastEditor.appendChild(labelLastEditor);
+    
+    let labelAllEditors = document.createElement("h1")
+    labelAllEditors.textContent = "Assinaturas presentes:"
+    allEditors.appendChild(labelAllEditors);
+    
     //Consulta o array de ultimos editores e os coloca dentro de paragrafos
     ultimasEdicoes.forEach((edicao, i) =>{
         let p = document.createElement("p");
         p.textContent = edicao.split(" ")[1] + " " + edicao.split(" ")[2];
-
-        if (ultimasEdicoes.length-1 == i) lastEditor.appendChild(p);
-        else allEditors.appendChild(p);
+        (i == 0) ? lastEditor.appendChild(p) : allEditors.appendChild(p);
     })
     allEditors.className = "allEditors";
     lastEditor.className = "lastEditor";
@@ -25,11 +35,11 @@ function updateLastMod(){
 
     last_mod.appendChild(allEditors);
     last_mod.appendChild(lastEditor);
-
-    decoder_output.appendChild(last_mod);
 }
 
 function updateEditionsBlocks(){
+    divBlocks.replaceChildren()
+
     stringBlocks.forEach( stringBlock => {
         const divBlock = document.createElement("div");
         const data_mod = document.createElement("h3");
@@ -38,7 +48,6 @@ function updateEditionsBlocks(){
             const p = document.createElement("p");
             p.textContent = row;
             divBlock.appendChild(p);
-            
         });
 
         data_mod.textContent = stringBlock[stringBlock.length-1];
@@ -47,8 +56,6 @@ function updateEditionsBlocks(){
         divBlocks.appendChild(divBlock);
     });
     divBlocks.className = "divBlocks";
-
-    decoder_output.appendChild(divBlocks);
 }
 
 export function createDivOutput(isTesting){
@@ -282,39 +289,31 @@ export function createDivOutput(isTesting){
     } else {
         encrypted_text = document.getElementById("input").value;
     }
-    decoder_output = document.querySelector(".decoder_output");
-    encrypted_text.st
-
     // Se não existe, cria
-    if (!decoder_output) {
+    decoder_output = document.querySelector(".decoder_output");
+
+    // Se existe, limpa; se não existe, cria
+    if (decoder_output) {
+        decoder_output.replaceChildren(); // limpa a div
+    } else {
         decoder_output = document.createElement("div");
         decoder_output.classList.add("decoder_output");
-        
-        last_mod = document.createElement("div");
-        allEditors = document.createElement("div");
-        lastEditor = document.createElement("div");    
-        updateLastMod();
-    
-        divBlocks = document.createElement("div");
-        stringBlocks = splitBlocks(encrypted_text);
-        updateEditionsBlocks();
-            
         document.getElementById("main").appendChild(decoder_output);
     }
     
-    // Atualiza o conteúdo
-    last_mod = decoder_output.querySelector(".last_mod");
-    allEditors = decoder_output.querySelector(".allEditors");
-    lastEditor = decoder_output.querySelector(".lastEditor");
+    // Cria e atualiza os elementos
+    last_mod = document.createElement("div");
+    allEditors = document.createElement("div");
+    lastEditor = document.createElement("div");
+    divBlocks = document.createElement("div");
     
-    allEditors.innerHTML = "";
-    lastEditor.innerHTML = "";
-    last_mod.innerHTML = ""; // Limpa conteúdo anterior
-    
+    stringBlocks = splitBlocks(encrypted_text);
     updateLastMod();
-    
-    divBlocks = decoder_output.querySelector(".divBlocks");
-    divBlocks.innerHTML = ""; // Limpa blocos antigos
-    
     updateEditionsBlocks();
+    
+    // Adiciona os elementos à div principal
+    last_mod.appendChild(allEditors);
+    last_mod.appendChild(lastEditor);
+    decoder_output.appendChild(last_mod);
+    decoder_output.appendChild(divBlocks);
 }
