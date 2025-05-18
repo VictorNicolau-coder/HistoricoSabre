@@ -175,7 +175,6 @@ header {
 
 .allEditors h1, 
 .lastEditor h1 {
-    position: sticky;
     border-radius: 7px 7px 0px 0px;
     text-align: center;
     width: 100%;
@@ -198,6 +197,7 @@ header {
 
     display: flex;
     flex-wrap: wrap; /* permite quebrar linha */
+    align-items: center;
     gap: 20px; /* espaçamento entre os cards (opcional) */
 }
 
@@ -208,8 +208,7 @@ header {
     width: 20%;
 
     flex: 1 0 calc(33.333% - 20px); /* 3 cards por linha, ajustando o gap */
-    box-sizing: border-box; /* garante que padding/border não quebrem o layout */
-    padding: 20px;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
@@ -220,10 +219,18 @@ header {
 }
 
 .divBlocks .divBlock h3{
+    border-radius: 0px 0px 7px 7px;
+    font-size: 1.4rem;
+
+    text-align: center;
     background-color: #2a0089;
     color: white;
+
+    margin-top: auto;
+    padding: 3px;
 }
 
 .divBlocks .divBlock p{
-    margin: 2px;
+    padding: 3px;
+    margin-top: auto;
 }
